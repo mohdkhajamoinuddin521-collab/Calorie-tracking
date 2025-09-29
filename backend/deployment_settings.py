@@ -27,7 +27,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://calorie-tracking-frontend.onrender.com",
 ]
 
-DEBUG = False
+DEBUG = True
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
