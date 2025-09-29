@@ -1,12 +1,41 @@
-
 import os
 import dj_database_url
-from .settings import *
-from .settings import BASE_DIR 
+from .settings import *  # import base settings
+from .settings import BASE_DIR
 
+# ------------------------------------------------------------------------------
+# SECURITY & DEBUG
+# ------------------------------------------------------------------------------
+DEBUG = False   # ✅ Keep False in production
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
+# ------------------------------------------------------------------------------
+# HOSTS & ORIGINS
+# ------------------------------------------------------------------------------
+ALLOWED_HOSTS = [
+    os.environ.get("RENDER_EXTERNAL_HOSTNAME"),   # backend render service
+    "calorie-tracking-frontend.onrender.com",     # frontend render site
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME')}",
+    "https://calorie-tracking-frontend.onrender.com",
+]
+
+# Allow CORS for React frontend
+CORS_ALLOWED_ORIGINS = [
+    "https://calorie-tracking-frontend.onrender.com",
+]
+
+# ------------------------------------------------------------------------------
+# MIDDLEWARE
+# ------------------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "corsheaders.middleware.CorsMiddleware",      # 👈 put it here
+
+    # 👇 CORS should be high in the list, before CommonMiddleware
+    "corsheaders.middleware.CorsMiddleware",
+
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -16,28 +45,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-
-ALLOWED_HOSTS = [
-    os.environ.get('RENDER_EXTERNAL_HOSTNAME'),
-    "calorie-tracking-frontend.onrender.com",
-    ]
-
-CSRF_TRUSTED_ORIGINS = [
-    f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME')}",
-    "https://calorie-tracking-frontend.onrender.com",
-]
-
-DEBUG = True
-
-SECRET_KEY = os.environ.get('SECRET_KEY')
-
-
-
-# Allow frontend (React) origin
-CORS_ALLOWED_ORIGINS = [
-    "https://calorie-tracking-frontend.onrender.com",
-]
-
+# ------------------------------------------------------------------------------
+# STATIC FILES
+# ------------------------------------------------------------------------------
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -47,9 +57,13 @@ STORAGES = {
     },
 }
 
+# ------------------------------------------------------------------------------
+# DATABASE
+# ------------------------------------------------------------------------------
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ['DATABASE_URL'],
-        conn_max_age=600
+    "default": dj_database_url.config(
+        default=os.environ["DATABASE_URL"],
+        conn_max_age=600,
+        ssl_require=True,   # ✅ enforce SSL for Render Postgres
     )
 }
