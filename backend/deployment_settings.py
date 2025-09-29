@@ -26,9 +26,9 @@ MIDDLEWARE = [
 ]
 
 # Allow frontend (React) origin
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:5173",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "https://calorie-tracking-frontend.onrender.com/",
+]
 
 STORAGES = {
     "default": {
