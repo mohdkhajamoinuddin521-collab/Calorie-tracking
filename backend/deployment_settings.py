@@ -12,17 +12,18 @@ DEBUG = False
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-MMIDDLEWARE = [
+MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",       # ✅ should be very high
+    "corsheaders.middleware.CorsMiddleware",      # 👈 put it here
     "django.middleware.common.CommonMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # static files
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 
 # Allow frontend (React) origin
 CORS_ALLOWED_ORIGINS = [
