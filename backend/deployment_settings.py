@@ -1,21 +1,29 @@
-
 import os
 import dj_database_url
 from .settings import *
 from .settings import BASE_DIR 
 
-ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
-
-CSRF_TRUSTED_ORIGINS = ['https://'+os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
-
-CORS_ALLOW_ALL_ORIGINS = True  # (just for now, for testing)
-
-DEBUG = True
+DEBUG = False  # better for Render
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
+ALLOWED_HOSTS = [
+    "calorie-tracker-app.onrender.com",
+    "calorie-tracking-frontend.onrender.com",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://calorie-tracker-app.onrender.com",
+    "https://calorie-tracking-frontend.onrender.com",
+]
+
+# ---- CORS ----
+CORS_ALLOW_ALL_ORIGINS = True  # test only
+# Later replace with:
+# CORS_ALLOWED_ORIGINS = ["https://calorie-tracking-frontend.onrender.com"]
+
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",      # 👈 put it here
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -24,11 +32,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-]
-
-# Allow frontend (React) origin
-CORS_ALLOWED_ORIGINS = [
-    "https://calorie-tracking-frontend.onrender.com",
 ]
 
 STORAGES = {
